@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - CHROMA_DB_DIR=/app/chroma_db
+      - FORCE_TORCH_BACKEND=1
+      # For prevent memory crashes
+      - OMP_NUM_THREADS=1
+      - MKL_NUM_THREADS=1
+      # This line added for pass the traffic trough v2rayN
+      - HTTP_PROXY=http://host.docker.internal:10809
+      - HTTPS_PROXY=http://host.docker.internal:10809
